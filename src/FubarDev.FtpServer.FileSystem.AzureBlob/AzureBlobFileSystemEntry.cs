@@ -1,14 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 using FubarDev.FtpServer.FileSystem.Generic;
 
-namespace FubarDev.FtpServer.FileSystem.AzureFiles
+namespace FubarDev.FtpServer.FileSystem.AzureBlob
 {
-    internal class AzureFilesFileSystemEntry : IUnixFileSystemEntry
+    internal class AzureBlobFileSystemEntry : IUnixFileSystemEntry
     {
-        public AzureFilesFileSystemEntry(string key, string name)
+        public AzureBlobFileSystemEntry(string key, string name)
         {
             Key = key;
             Name = name;

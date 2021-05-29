@@ -1,10 +1,10 @@
 using System.IO;
 
-namespace FubarDev.FtpServer.FileSystem.AzureFiles
+namespace FubarDev.FtpServer.FileSystem.AzureBlob
 {
-    internal class AzureFilesDirectoryEntry : AzureFilesFileSystemEntry, IUnixDirectoryEntry
+    internal class AzureBlobDirectoryEntry : AzureBlobFileSystemEntry, IUnixDirectoryEntry
     {
-        public AzureFilesDirectoryEntry(string key, bool isRoot = false)
+        public AzureBlobDirectoryEntry(string key, bool isRoot = false)
             : base(key.EndsWith("/") || isRoot ? key : key + "/", Path.GetFileName(key.TrimEnd('/')))
         {
             IsRoot = isRoot;

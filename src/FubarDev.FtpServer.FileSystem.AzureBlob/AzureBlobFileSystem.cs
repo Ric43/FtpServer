@@ -1,20 +1,40 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Azure.Storage;
+using Azure.Storage.Blobs;
+
 using FubarDev.FtpServer.BackgroundTransfer;
 
-namespace FubarDev.FtpServer.FileSystem.AzureFiles
+namespace FubarDev.FtpServer.FileSystem.AzureBlob
 {
-    public class AzureFilesFileSystem : IUnixFileSystem
+    public class AzureBlobFileSystem : IUnixFileSystem
     {
-        private readonly AzureFilesFileSystemOptions _options;
+        private readonly AzureBlobFileSystemOptions _options;
+        private readonly BlobServiceClient _client;
 
-        //private readonly AmazonS3Client _client;
-        //private readonly TransferUtility _transferUtility;
+        public AzureBlobFileSystem(AzureBlobFileSystemOptions options, string rootDirectory)
+        {
+            _options = options;
+            if (!string.IsNullOrWhiteSpace(options.ConnectionString))
+            {
+                _client = new BlobServiceClient(options.ConnectionString);
+            }
+            else if (!string.IsNullOrWhiteSpace(options.SharedAccessSignature))
+            {
+                _client = new BlobServiceClient(new Uri(options.SharedAccessSignature));
+            }
+            else if (string.IsNullOrWhiteSpace(options.AccountName) || string.IsNullOrWhiteSpace(options.AccountKey) || string.IsNullOrWhiteSpace(options.BlobServiceUri))
+            {
+                throw new InvalidOperationException("At least one method of connecting to the storage account must be provided and anonymous access is not supported");
+            }
+
+            StorageSharedKeyCredential credential = new StorageSharedKeyCredential(options.AccountName, options.AccountKey);
+            _client = new BlobServiceClient(new Uri(options.BlobServiceUri), credential);
+        }
 
         public bool SupportsAppend => false;
 
@@ -23,11 +43,6 @@ namespace FubarDev.FtpServer.FileSystem.AzureFiles
         public StringComparer FileSystemEntryComparer => throw new NotImplementedException();
 
         public IUnixDirectoryEntry Root => throw new NotImplementedException();
-
-        public AzureFilesFileSystem()
-        {
-
-        }
 
         public Task<IBackgroundTransfer?> AppendAsync(IUnixFileEntry fileEntry, long? startPosition, Stream data, CancellationToken cancellationToken)
         {

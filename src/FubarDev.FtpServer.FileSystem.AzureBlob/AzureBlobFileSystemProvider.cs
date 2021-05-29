@@ -1,21 +1,19 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Options;
 
-namespace FubarDev.FtpServer.FileSystem.AzureFiles
+namespace FubarDev.FtpServer.FileSystem.AzureBlob
 {
-    public class AzureFilesFileSystemProvider : IFileSystemClassFactory
+    public class AzureBlobFileSystemProvider : IFileSystemClassFactory
     {
         /// <summary>
         /// The file system factory for an azure files-based file system via the API (not CIFS)
         /// </summary>
-        private readonly AzureFilesFileSystemOptions _options;
+        private readonly AzureBlobFileSystemOptions _options;
         private readonly IAccountDirectoryQuery _accountDirectoryQuery;
 
-        public AzureFilesFileSystemProvider(IOptions<AzureFilesFileSystemOptions> options, IAccountDirectoryQuery accountDirectoryQuery)
+        public AzureBlobFileSystemProvider(IOptions<AzureBlobFileSystemOptions> options, IAccountDirectoryQuery accountDirectoryQuery)
         {
             _options = options.Value;
             _accountDirectoryQuery = accountDirectoryQuery;
