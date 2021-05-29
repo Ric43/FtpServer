@@ -8,6 +8,16 @@ namespace FubarDev.FtpServer.FileSystem.AzureFiles
 {
     internal class AzureFilesFileSystemEntry : IUnixFileSystemEntry
     {
+        public AzureFilesFileSystemEntry(string key, string name)
+        {
+            Key = key;
+            Name = name;
+            Permissions = new GenericUnixPermissions(
+                new GenericAccessMode(true, true, false),
+                new GenericAccessMode(true, true, false),
+                new GenericAccessMode(true, true, false));
+        }
+
         public string Key { get; }
 
         public string Name { get; }
@@ -23,15 +33,5 @@ namespace FubarDev.FtpServer.FileSystem.AzureFiles
         public string Owner => "owner";
 
         public string Group => "group";
-
-        public AzureFilesFileSystemEntry(string key, string name)
-        {
-            Key = key;
-            Name = name;
-            Permissions = new GenericUnixPermissions(
-                new GenericAccessMode(true, true, false),
-                new GenericAccessMode(true, true, false),
-                new GenericAccessMode(true, true, false));
-        }
     }
 }

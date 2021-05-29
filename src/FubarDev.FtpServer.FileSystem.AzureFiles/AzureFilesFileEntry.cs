@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace FubarDev.FtpServer.FileSystem.AzureFiles
 {
     internal class AzureFilesFileEntry : AzureFilesFileSystemEntry, IUnixFileEntry
     {
-        public AzureFilesFileEntry(string key, string name) : base(key, name)
+        public AzureFilesFileEntry(string key, long size)
+            : base(key, Path.GetFileName(key))
         {
+            Size = size;
         }
 
-        public long Size => throw new NotImplementedException();
+        public long Size { get; }
     }
 }

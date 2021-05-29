@@ -11,6 +11,11 @@ namespace FubarDev.FtpServer.FileSystem.AzureFiles
 {
     public class AzureFilesFileSystem : IUnixFileSystem
     {
+        private readonly AzureFilesFileSystemOptions _options;
+
+        //private readonly AmazonS3Client _client;
+        //private readonly TransferUtility _transferUtility;
+
         public bool SupportsAppend => false;
 
         public bool SupportsNonEmptyDirectoryDelete => false;
